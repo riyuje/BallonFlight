@@ -22,6 +22,16 @@ public class PlayerController : MonoBehaviour
 
     public GameObject[] ballons;  //GameObject型の配列。インスペクターからヒエラルキーにあるBallonゲームオブジェクトを2つアサインする
 
+    public int maxBallonCount;  //バルーンを生成する最大数
+
+    public Transform[] ballonTrans; //バルーンの生成位置の配列
+
+    public GameObject ballonPrefab; //バルーンのプレファブ
+
+    public float generateTime; //バルーンを生成する時間
+
+    public bool isGenerating; //バルーンを生成中かどうかを判定する。falseなら生成していない状態。trueは生成中の状態。
+
     [SerializeField, Header("Linecast用 地面判定レイヤー")]
     private LayerMask groundLayer;
     void Start()
@@ -32,6 +42,9 @@ public class PlayerController : MonoBehaviour
         anim = GetComponent<Animator>();
 
         scale = transform.localScale.x;
+
+        //配列の初期化(バルーンの最大生成数だけ配列の要素数を用意する)
+        ballons = new GameObject[maxBallonCount];
     }
     void Update()
     {
@@ -41,8 +54,8 @@ public class PlayerController : MonoBehaviour
         //SceneビューにPhysics2D.LinecastメソッドのLineを表示する
         Debug.DrawLine(transform.position + transform.up * 0.4f, transform.position - transform.up * 1.2f, Color.red, 1.0f);
 
-        //Ballons配列変数の最大要素数が0より大きいなら = インスペクターでBallons変数に情報が登録されているなら
-        if (ballons.Length > 0)
+        //ballons変数の最初の要素の値が空ではないなら = バルーンが1ツ生成されるとこの要素に値が代入される = バルーンが1つあるなら
+        if (ballons[0] != null)
         {
             //ジャンプ
             if (Input.GetButtonDown(jump))  //InputManagerのJumpの項目に登録されているキー入力を判定する
@@ -68,6 +81,17 @@ public class PlayerController : MonoBehaviour
         {
             //linearVelocity.yの値に制限をかける(落下せずに上空で待機できてしまう現象を防ぐため)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5.0f);
+        }
+
+        //地面に接地していち、バルーンが生成中ではない場合
+        if(isGrounded == true && isGenerating == false)
+        {
+            //Qボタンを押したら
+            if (Input.GetKeyDown(KeyCode.Q))
+            {
+                //バルーンを1つ作成する
+                StartCoroutine(GenerateBallon());
+            }
         }
     }
 
@@ -145,5 +169,39 @@ public class PlayerController : MonoBehaviour
 
         //現在の位置を更新(制限範囲を超えた場合、ここで移動の範囲を制限する)
         transform.position = new Vector2(posX, posY);
+    }
+
+    ///<summary>
+    ///バルーン生成
+    ///</summary>
+    ///<returns></returns>
+    private IEnumerator GenerateBallon()
+    {
+        //全ての配列の要素にバルーンが存在している場合には、バルーンを生成しない
+        if (ballons[1] != null)
+        {
+            yield break;
+        }
+
+        //生成中状態にする
+        isGenerating = true;
+
+        //1つめの配列の要素が空なら
+        if (ballons[0] == null)
+        {
+            //1つ目のバルーン生成を生成して、1番目の配列へ代入
+            ballons[0] = Instantiate(ballonPrefab, ballonTrans[0]);
+        }
+        else
+        {
+            //2つ目のバルーン生成を生成して、2番目の配列へ代入
+            ballons[1] = Instantiate(ballonPrefab, ballonTrans[1]);
+        }
+
+        //生成時間分待機
+        yield return new WaitForSeconds(generateTime);
+
+        //生成中状態終了。再度生成できるようにする
+        isGenerating = false;
     }
 }
