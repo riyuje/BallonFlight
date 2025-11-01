@@ -20,6 +20,8 @@ public class PlayerController : MonoBehaviour
 
     public bool isGrounded;
 
+    public GameObject[] ballons;  //GameObject型の配列。インスペクターからヒエラルキーにあるBallonゲームオブジェクトを2つアサインする
+
     [SerializeField, Header("Linecast用 地面判定レイヤー")]
     private LayerMask groundLayer;
     void Start()
@@ -39,21 +41,30 @@ public class PlayerController : MonoBehaviour
         //SceneビューにPhysics2D.LinecastメソッドのLineを表示する
         Debug.DrawLine(transform.position + transform.up * 0.4f, transform.position - transform.up * 1.2f, Color.red, 1.0f);
 
-        //ジャンプ
-        if (Input.GetButtonDown(jump))  //InputManagerのJumpの項目に登録されているキー入力を判定する
+        //Ballons配列変数の最大要素数が0より大きいなら = インスペクターでBallons変数に情報が登録されているなら
+        if (ballons.Length > 0)
         {
-            Jump();
-        }
+            //ジャンプ
+            if (Input.GetButtonDown(jump))  //InputManagerのJumpの項目に登録されているキー入力を判定する
+            {
+                Jump();
+            }
 
-        //接地していない(空中にいる)間で、落下中の場合
-        if(isGrounded == false && rb.linearVelocity.y < 0.15f)
+            //接地していない(空中にいる)間で、落下中の場合
+            if (isGrounded == false && rb.linearVelocity.y < 0.15f)
+            {
+                //落下アニメを繰り返す
+                anim.SetTrigger("Fall");
+            }
+
+        }
+        else
         {
-            //落下アニメを繰り返す
-            anim.SetTrigger("Fall");
+            Debug.Log("バルーンがない。ジャンプ不可");
         }
 
         //linearlinearVelocity.yの値が5.0fを超える場合(ジャンプ連続で押した場合)
-        if(rb.linearVelocity.y > 5.0)
+        if (rb.linearVelocity.y > 5.0)
         {
             //linearVelocity.yの値に制限をかける(落下せずに上空で待機できてしまう現象を防ぐため)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5.0f);
@@ -116,6 +127,7 @@ public class PlayerController : MonoBehaviour
 
             //①待機状態のアニメの再生を止めて、走るアニメの再生への遷移を行う
             anim.SetFloat("Run", 0.5f); //☆追加 Runアニメーションに対して、0.5fの値を情報として渡す。遷移条件がgreater 0.1なので、0.1以上の値を渡すと条件が成立してRunアニメーションが再生される
+            anim.SetBool("Idle", false);
         }
         else
         {
@@ -124,6 +136,7 @@ public class PlayerController : MonoBehaviour
 
             //②走るアニメの再生を止めて、待機状態のアニメの再生への遷移を行う
             anim.SetFloat("Run", 0.0f); //☆追加 Runアニメーションに対して、0.1fの値を情報として渡す。遷移条件がless 0.1なので、0.1以下の値を渡すと条件が成立してRunアニメーションが停止される
+            anim.SetBool("Idle", true);
         }
 
         //現在の位置情報が移動範囲の制限灰を超えていないか確認する。超えていたら、制限範囲内に収める
