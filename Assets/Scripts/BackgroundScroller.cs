@@ -1,27 +1,27 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class BackgroundScroller : MonoBehaviour
 {
-    [Header("”wŒi‰æ‘œ‚ÌƒXƒNƒ[ƒ‹‘¬“x = ‹­§ƒXƒNƒ[ƒ‹‚Ì‘¬“x")]
+    [Header("èƒŒæ™¯ç”»åƒã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«é€Ÿåº¦ = å¼·åˆ¶ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«ã®é€Ÿåº¦")]
     public float scrollSpeed = 0.01f;
 
-    [Header("‰æ‘œ‚ÌƒXƒNƒ[ƒ‹I—¹’n“_")]
+    [Header("ç”»åƒã®ã‚¹ã‚¯ãƒ­ãƒ¼ãƒ«çµ‚äº†åœ°ç‚¹")]
     public float stopPosition = -16f;
 
-    [Header("‰æ‘œ‚ÌÄƒXƒ^[ƒg’n“_")]
+    [Header("ç”»åƒã®å†ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹")]
     public float restartPosition = 5.8f;
 
     void Update()
     {
-        //‰æ–Ê‚Ì¶•ûŒü‚É‚±‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg(”wŒi)‚ÌˆÊ’u‚ğˆÚ“®‚·‚é
+        //ç”»é¢ã®å·¦æ–¹å‘ã«ã“ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆ(èƒŒæ™¯)ã®ä½ç½®ã‚’ç§»å‹•ã™ã‚‹
         transform.Translate(-scrollSpeed, 0, 0);
 
-        //‚±‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ªstopPosition‚É“’B‚µ‚½‚ç
+        //ã“ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ãŒstopPositionã«åˆ°é”ã—ãŸã‚‰
         if(transform.position.x < stopPosition)
         {
-            //ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’u‚ğÄƒXƒ^[ƒg’n“_‚ÖˆÚ“®‚·‚é
+            //ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®ã‚’å†ã‚¹ã‚¿ãƒ¼ãƒˆåœ°ç‚¹ã¸ç§»å‹•ã™ã‚‹
             transform.position = new Vector2(restartPosition, 0);
         }
     }

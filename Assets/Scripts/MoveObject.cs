@@ -1,20 +1,20 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class MoveObject : MonoBehaviour
 {
-    [Header("ˆÚ“®‘¬“x")]
+    [Header("ç§»å‹•é€Ÿåº¦")]
     public float moveSpeed;
     void Update()
     {
-        //ƒXƒNƒŠƒvƒg‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌˆÊ’uî•ñ‚ğXV‚µ‚ÄˆÚ“®‚³‚¹‚é
+        //ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®ä½ç½®æƒ…å ±ã‚’æ›´æ–°ã—ã¦ç§»å‹•ã•ã›ã‚‹
         transform.position += new Vector3(-moveSpeed, 0, 0);
 
-        //ƒXƒNƒŠƒvƒg‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ªƒQ[ƒ€‰æ–Ê‚ÉÊ‚ç‚È‚¢ˆÊ’u‚Ü‚ÅˆÚ“®‚µ‚½‚ç
+        //ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆãŒã‚²ãƒ¼ãƒ ç”»é¢ã«å†™ã‚‰ãªã„ä½ç½®ã¾ã§ç§»å‹•ã—ãŸã‚‰
         if(transform.position.x <= -14.0f)
         {
-            //ƒXƒNƒŠƒvƒg‚ªƒAƒ^ƒbƒ`‚³‚ê‚Ä‚¢‚éƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ”j‰ó
+            //ã‚¹ã‚¯ãƒªãƒ—ãƒˆãŒã‚¢ã‚¿ãƒƒãƒã•ã‚Œã¦ã„ã‚‹ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´å£Š
             Destroy(gameObject);
         }
     }

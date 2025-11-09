@@ -1,29 +1,29 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ParentSwitcher : MonoBehaviour
 {
-    private string player = "Player";  //Tag�ɐݒ肵�Ă��镶�������
+    private string player = "Player";  //Tagに設定している文字列を代入
 
-    //���̃X�N���v�g���A�^�b�`����Ă���Q�[���I�u�W�F�N�g�̃R���C�_�[�ƁA���̃Q�[���I�u�W�F�N�g�̃R���C�_�[���ڐG���Ă���Ԃ����ƐڐG������s�����\�b�h
+    //このスクリプトがアタッチされているゲームオブジェクトのコライダーと、他のゲームオブジェクトのコライダーが接触している間ずっと接触判定を行うメソッド
     private void OnCollisionStay2D(Collision2D col)
     {
-        //�ڐG���肪���������col�ϐ��ɃR���C�_�[�̏�񂪑�������B���̃R���C�_�[�����Q�[���I�u�W�F�N�g��Tag��player�ϐ��̒l("Player")�Ɠ���������Ȃ�
+        //接触判定が発生するとcol変数にコライダーの情報が代入される。そのコライダーを持つゲームオブジェクトのTagがplayer変数の値("Player")と同じ文字列なら
         if(col.gameObject.tag == player)
         {
-            //�ڐG���Ă���Q�[���I�u�W�F�N�g(�L����)���A���̃X�N���v�g���A�^�b�`����Ă���Q�[���I�u�W�F�N�g(��)�̎q�I�u�W�F�N�g�ɂ���
+            //接触しているゲームオブジェクト(キャラ)を、このスクリプトがアタッチされているゲームオブジェクト(床)の子オブジェクトにする
             col.transform.SetParent(transform);
         }
     }
 
-    //���̃X�N���v�g���A�^�b�`����Ă���Q�[���I�u�W�F�N�g�̃R���C�_�[�ƁA���̃Q�[���I�u�W�F�N�g�̃R���C�_�[�Ƃ����ꂽ�ۂɔ�����s�����\�b�h
+    //このスクリプトがアタッチされているゲームオブジェクトのコライダーと、他のゲームオブジェクトのコライダーとが離れた際に判定を行うメソッド
     private void OnCollisionExit2D(Collision2D col)
     {
-        //�R���C�_�[�����ꂽ���肪���������col�ϐ��ɃR���C�_�[�̏�񂪑�������B���̃R���C�_�[�����Q�[���I�u�W�F�N�g��Tag��player�ϐ��̒l("Player")�Ɠ���������Ȃ�
+        //コライダーが離れた判定が発生するとcol変数にコライダーの情報が代入される。そのコライダーを持つゲームオブジェクトのTagがplayer変数の値("Player")と同じ文字列なら
         if (col.gameObject.tag == player)
         {
-            //�ڐG��Ԃł͂Ȃ��Ȃ���(���ꂽ)�Q�[���I�u�W�F�N�g(�L����)�ƁA���̃X�N���v�g���A�^�b�`����Ă���Q�[���I�u�W�F�N�g(��)�̐e�q�֌W����������
+            //接触状態ではなくなった(離れた)ゲームオブジェクト(キャラ)と、このスクリプトがアタッチされているゲームオブジェクト(床)の親子関係を解消する
             col.transform.SetParent(null);
         }
     }

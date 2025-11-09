@@ -1,207 +1,270 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
-    private string horizontal = "Horizontal";  //ƒL[“ü—Í—p‚Ì•¶š—ñw’è(InputManager‚ÌHorizontal‚Ì“ü—Í‚ğ”»’è‚·‚é‚½‚ß‚Ì•¶š—ñ)
+    private string horizontal = "Horizontal";  //ã‚­ãƒ¼å…¥åŠ›ç”¨ã®æ–‡å­—åˆ—æŒ‡å®š(InputManagerã®Horizontalã®å…¥åŠ›ã‚’åˆ¤å®šã™ã‚‹ãŸã‚ã®æ–‡å­—åˆ—)
     private string jump = "Jump";
 
-    private Rigidbody2D rb;  //ƒRƒ“ƒ|[ƒlƒ“ƒg‚Ìæ“¾—p
+    private Rigidbody2D rb;  //ã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã®å–å¾—ç”¨
     private Animator anim;
 
-    private float scale; //Œü‚«‚Ìİ’è‚É—˜—p‚·‚é
+    private float scale; //å‘ãã®è¨­å®šã«åˆ©ç”¨ã™ã‚‹
+    private float limitPosX = 8.5f;  //æ¨ªæ–¹å‘ã®åˆ¶é™å€¤
+    private float limitPosY = 4.45f; //ç¸¦æ–¹å‘ã®åˆ¶é™å€¤
 
-    private float limitPosX = 8.5f;  //‰¡•ûŒü‚Ì§ŒÀ’l
-    private float limitPosY = 4.45f; //c•ûŒü‚Ì§ŒÀ’l
+    public bool isFirstGenerateBallon;  //åˆã‚ã¦ãƒãƒ«ãƒ¼ãƒ³ã‚’ç”Ÿæˆã—ãŸã‹ã‚’åˆ¤å®šã™ã‚‹ãŸã‚ã®å¤‰æ•°(å¾Œç¨‹å¤–éƒ¨ã‚¹ã‚¯ãƒªãƒ—ãƒˆã§ã‚‚åˆ©ç”¨ã™ã‚‹ãŸã‚publicã§å®£è¨€ã™ã‚‹)
 
-    public float moveSpeed;  //ˆÚ“®‘¬“x
-    public float jumpPower;  //ƒWƒƒƒ“ƒv—ÍE•‚—V—Í
+    public float moveSpeed;  //ç§»å‹•é€Ÿåº¦
+    public float jumpPower;  //ã‚¸ãƒ£ãƒ³ãƒ—åŠ›ãƒ»æµ®éŠåŠ›
 
     public bool isGrounded;
 
-    public GameObject[] ballons;  //GameObjectŒ^‚Ì”z—ñBƒCƒ“ƒXƒyƒNƒ^[‚©‚çƒqƒGƒ‰ƒ‹ƒL[‚É‚ ‚éBallonƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ2‚ÂƒAƒTƒCƒ“‚·‚é
+    public GameObject[] ballons;  //GameObjectå‹ã®é…åˆ—ã€‚ã‚¤ãƒ³ã‚¹ãƒšã‚¯ã‚¿ãƒ¼ã‹ã‚‰ãƒ’ã‚¨ãƒ©ãƒ«ã‚­ãƒ¼ã«ã‚ã‚‹Ballonã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’2ã¤ã‚¢ã‚µã‚¤ãƒ³ã™ã‚‹
+    public int maxBallonCount;  //ãƒãƒ«ãƒ¼ãƒ³ã‚’ç”Ÿæˆã™ã‚‹æœ€å¤§æ•°
+    public Transform[] ballonTrans; //ãƒãƒ«ãƒ¼ãƒ³ã®ç”Ÿæˆä½ç½®ã®é…åˆ—
+    public GameObject ballonPrefab; //ãƒãƒ«ãƒ¼ãƒ³ã®ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ–
 
-    public int maxBallonCount;  //ƒoƒ‹[ƒ“‚ğ¶¬‚·‚éÅ‘å”
+    public float generateTime; //ãƒãƒ«ãƒ¼ãƒ³ã‚’ç”Ÿæˆã™ã‚‹æ™‚é–“
+    public bool isGenerating; //ãƒãƒ«ãƒ¼ãƒ³ã‚’ç”Ÿæˆä¸­ã‹ã©ã†ã‹ã‚’åˆ¤å®šã™ã‚‹ã€‚falseãªã‚‰ç”Ÿæˆã—ã¦ã„ãªã„çŠ¶æ…‹ã€‚trueã¯ç”Ÿæˆä¸­ã®çŠ¶æ…‹ã€‚
 
-    public Transform[] ballonTrans; //ƒoƒ‹[ƒ“‚Ì¶¬ˆÊ’u‚Ì”z—ñ
+    public float knockbackPower;
 
-    public GameObject ballonPrefab; //ƒoƒ‹[ƒ“‚ÌƒvƒŒƒtƒ@ƒu
+    public int coinPoint;
 
-    public float generateTime; //ƒoƒ‹[ƒ“‚ğ¶¬‚·‚éŠÔ
-
-    public bool isGenerating; //ƒoƒ‹[ƒ“‚ğ¶¬’†‚©‚Ç‚¤‚©‚ğ”»’è‚·‚éBfalse‚È‚ç¶¬‚µ‚Ä‚¢‚È‚¢ó‘ÔBtrue‚Í¶¬’†‚Ìó‘ÔB
-
-    [SerializeField, Header("Linecast—p ’n–Ê”»’èƒŒƒCƒ„[")]
+    [SerializeField, Header("Linecastç”¨ åœ°é¢åˆ¤å®šãƒ¬ã‚¤ãƒ¤ãƒ¼")]
     private LayerMask groundLayer;
+
+    [SerializeField]
+    private StartChecker startChecker;
     void Start()
     {
-        //•K—v‚ÈƒRƒ“ƒ|[ƒlƒ“ƒg‚ğæ“¾‚µ‚Ä—pˆÓ‚µ‚½•Ï”‚É‘ã“ü
+        //å¿…è¦ãªã‚³ãƒ³ãƒãƒ¼ãƒãƒ³ãƒˆã‚’å–å¾—ã—ã¦ç”¨æ„ã—ãŸå¤‰æ•°ã«ä»£å…¥
         rb = GetComponent<Rigidbody2D>();
 
         anim = GetComponent<Animator>();
 
         scale = transform.localScale.x;
 
-        //”z—ñ‚Ì‰Šú‰»(ƒoƒ‹[ƒ“‚ÌÅ‘å¶¬”‚¾‚¯”z—ñ‚Ì—v‘f”‚ğ—pˆÓ‚·‚é)
+        //é…åˆ—ã®åˆæœŸåŒ–(ãƒãƒ«ãƒ¼ãƒ³ã®æœ€å¤§ç”Ÿæˆæ•°ã ã‘é…åˆ—ã®è¦ç´ æ•°ã‚’ç”¨æ„ã™ã‚‹)
         ballons = new GameObject[maxBallonCount];
     }
     void Update()
     {
-        //’n–ÊÚ’n Physics2D.Linecastƒƒ\ƒbƒh‚ğÀs‚µ‚ÄAGround Layer‚ÆƒLƒƒƒ‰‚ÌƒRƒ‰ƒCƒ_[‚Æ‚ªÚ’n‚µ‚Ä‚¢‚é‹——£‚©‚Ç‚¤‚©‚ğŠm”F‚µAÚ’n‚µ‚Ä‚¢‚é‚È‚çtrue,Ú’n‚µ‚Ä‚¢‚È‚¢‚È‚çfalse‚ğ•Ô‚·
+        //åœ°é¢æ¥åœ° Physics2D.Linecastãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œã—ã¦ã€Ground Layerã¨ã‚­ãƒ£ãƒ©ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã¨ãŒæ¥åœ°ã—ã¦ã„ã‚‹è·é›¢ã‹ã©ã†ã‹ã‚’ç¢ºèªã—ã€æ¥åœ°ã—ã¦ã„ã‚‹ãªã‚‰true,æ¥åœ°ã—ã¦ã„ãªã„ãªã‚‰falseã‚’è¿”ã™
         isGrounded = Physics2D.Linecast(transform.position + transform.up * 0.4f, transform.position - transform.up * 1.2f, groundLayer);
 
-        //Sceneƒrƒ…[‚ÉPhysics2D.Linecastƒƒ\ƒbƒh‚ÌLine‚ğ•\¦‚·‚é
+        //Sceneãƒ“ãƒ¥ãƒ¼ã«Physics2D.Linecastãƒ¡ã‚½ãƒƒãƒ‰ã®Lineã‚’è¡¨ç¤ºã™ã‚‹
         Debug.DrawLine(transform.position + transform.up * 0.4f, transform.position - transform.up * 1.2f, Color.red, 1.0f);
 
-        //ballons•Ï”‚ÌÅ‰‚Ì—v‘f‚Ì’l‚ª‹ó‚Å‚Í‚È‚¢‚È‚ç = ƒoƒ‹[ƒ“‚ª1ƒc¶¬‚³‚ê‚é‚Æ‚±‚Ì—v‘f‚É’l‚ª‘ã“ü‚³‚ê‚é = ƒoƒ‹[ƒ“‚ª1‚Â‚ ‚é‚È‚ç
+        //ballonså¤‰æ•°ã®æœ€åˆã®è¦ç´ ã®å€¤ãŒç©ºã§ã¯ãªã„ãªã‚‰ = ãƒãƒ«ãƒ¼ãƒ³ãŒ1ãƒ„ç”Ÿæˆã•ã‚Œã‚‹ã¨ã“ã®è¦ç´ ã«å€¤ãŒä»£å…¥ã•ã‚Œã‚‹ = ãƒãƒ«ãƒ¼ãƒ³ãŒ1ã¤ã‚ã‚‹ãªã‚‰
         if (ballons[0] != null)
         {
-            //ƒWƒƒƒ“ƒv
-            if (Input.GetButtonDown(jump))  //InputManager‚ÌJump‚Ì€–Ú‚É“o˜^‚³‚ê‚Ä‚¢‚éƒL[“ü—Í‚ğ”»’è‚·‚é
+            //ã‚¸ãƒ£ãƒ³ãƒ—
+            if (Input.GetButtonDown(jump))  //InputManagerã®Jumpã®é …ç›®ã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼å…¥åŠ›ã‚’åˆ¤å®šã™ã‚‹
             {
                 Jump();
             }
 
-            //Ú’n‚µ‚Ä‚¢‚È‚¢(‹ó’†‚É‚¢‚é)ŠÔ‚ÅA—‰º’†‚Ìê‡
+            //æ¥åœ°ã—ã¦ã„ãªã„(ç©ºä¸­ã«ã„ã‚‹)é–“ã§ã€è½ä¸‹ä¸­ã®å ´åˆ
             if (isGrounded == false && rb.linearVelocity.y < 0.15f)
             {
-                //—‰ºƒAƒjƒ‚ğŒJ‚è•Ô‚·
+                //è½ä¸‹ã‚¢ãƒ‹ãƒ¡ã‚’ç¹°ã‚Šè¿”ã™
                 anim.SetTrigger("Fall");
             }
 
         }
         else
         {
-            Debug.Log("ƒoƒ‹[ƒ“‚ª‚È‚¢BƒWƒƒƒ“ƒv•s‰Â");
+            Debug.Log("ãƒãƒ«ãƒ¼ãƒ³ãŒãªã„ã€‚ã‚¸ãƒ£ãƒ³ãƒ—ä¸å¯");
         }
 
-        //linearlinearVelocity.y‚Ì’l‚ª5.0f‚ğ’´‚¦‚éê‡(ƒWƒƒƒ“ƒv˜A‘±‚Å‰Ÿ‚µ‚½ê‡)
+        //linearlinearVelocity.yã®å€¤ãŒ5.0fã‚’è¶…ãˆã‚‹å ´åˆ(ã‚¸ãƒ£ãƒ³ãƒ—é€£ç¶šã§æŠ¼ã—ãŸå ´åˆ)
         if (rb.linearVelocity.y > 5.0)
         {
-            //linearVelocity.y‚Ì’l‚É§ŒÀ‚ğ‚©‚¯‚é(—‰º‚¹‚¸‚Éã‹ó‚Å‘Ò‹@‚Å‚«‚Ä‚µ‚Ü‚¤Œ»Û‚ğ–h‚®‚½‚ß)
+            //linearVelocity.yã®å€¤ã«åˆ¶é™ã‚’ã‹ã‘ã‚‹(è½ä¸‹ã›ãšã«ä¸Šç©ºã§å¾…æ©Ÿã§ãã¦ã—ã¾ã†ç¾è±¡ã‚’é˜²ããŸã‚)
             rb.linearVelocity = new Vector2(rb.linearVelocity.x, 5.0f);
         }
 
-        //’n–Ê‚ÉÚ’n‚µ‚Ä‚¢‚¿Aƒoƒ‹[ƒ“‚ª¶¬’†‚Å‚Í‚È‚¢ê‡
+        //åœ°é¢ã«æ¥åœ°ã—ã¦ã„ã¡ã€ãƒãƒ«ãƒ¼ãƒ³ãŒç”Ÿæˆä¸­ã§ã¯ãªã„å ´åˆ
         if(isGrounded == true && isGenerating == false)
         {
-            //Qƒ{ƒ^ƒ“‚ğ‰Ÿ‚µ‚½‚ç
+            //Qãƒœã‚¿ãƒ³ã‚’æŠ¼ã—ãŸã‚‰
             if (Input.GetKeyDown(KeyCode.Q))
             {
-                //ƒoƒ‹[ƒ“‚ğ1‚Âì¬‚·‚é
+                //ãƒãƒ«ãƒ¼ãƒ³ã‚’1ã¤ä½œæˆã™ã‚‹
                 StartCoroutine(GenerateBallon());
             }
         }
     }
 
     /// <summary>
-    /// ƒWƒƒƒ“ƒv‚Æ‹ó’†•‚—V
+    /// ã‚¸ãƒ£ãƒ³ãƒ—ã¨ç©ºä¸­æµ®éŠ
     /// </summary>
     private void Jump()
     {
-        //ƒLƒƒƒ‰‚ÌˆÊ’u‚ğã•ûŒü‚ÖˆÚ“®‚³‚¹‚é(ƒWƒƒƒ“ƒvE•‚—V)
+        //ã‚­ãƒ£ãƒ©ã®ä½ç½®ã‚’ä¸Šæ–¹å‘ã¸ç§»å‹•ã•ã›ã‚‹(ã‚¸ãƒ£ãƒ³ãƒ—ãƒ»æµ®éŠ)
         rb.AddForce(transform.up * jumpPower);
 
-        //Jump(Up+Mid)ƒAƒjƒ[ƒVƒ‡ƒ“‚ğÄ¶‚·‚é
+        //Jump(Up+Mid)ã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã‚’å†ç”Ÿã™ã‚‹
         anim.SetTrigger("Jump");
     }
 
     void FixedUpdate()
     {
-        //ˆÚ“®
+        //ç§»å‹•
         Move();
     }
 
     /// <summary>
-    /// ˆÚ“®
+    /// ç§»å‹•
     /// </summary>
     private void Move()
     {
-        //…•½(‰¡)•ûŒü‚Ö‚Ì“ü—Íó•t
-        float x = Input.GetAxis(horizontal);  //InputManager‚ÌHorizontak‚É“o˜^‚³‚ê‚Ä‚¢‚éƒL[‚Ì“ü—Í‚ª‚ ‚é‚©‚Ç‚¤‚©Šm”F‚ğs‚¤
+        //æ°´å¹³(æ¨ª)æ–¹å‘ã¸ã®å…¥åŠ›å—ä»˜
+        float x = Input.GetAxis(horizontal);  //InputManagerã®Horizontakã«ç™»éŒ²ã•ã‚Œã¦ã„ã‚‹ã‚­ãƒ¼ã®å…¥åŠ›ãŒã‚ã‚‹ã‹ã©ã†ã‹ç¢ºèªã‚’è¡Œã†
 
-        //x‚Ì’l‚ª0‚Å‚Í‚È‚¢ê‡ = ƒL[“ü—Í‚ª‚ ‚éê‡
+        //xã®å€¤ãŒ0ã§ã¯ãªã„å ´åˆ = ã‚­ãƒ¼å…¥åŠ›ãŒã‚ã‚‹å ´åˆ
         if(x != 0)
         {
-            //velocity(‘¬“x)‚ÉV‚µ‚¢’l‚ğ‘ã“ü‚µ‚ÄˆÚ“®
-            //‡AUnity6000ˆÈ~‚Ìê‡
+            //velocity(é€Ÿåº¦)ã«æ–°ã—ã„å€¤ã‚’ä»£å…¥ã—ã¦ç§»å‹•
+            //â‘¡Unity6000ä»¥é™ã®å ´åˆ
             rb.linearVelocity = new Vector2(x * moveSpeed, rb.linearVelocity.y);
 
-            //temp•Ï”‚ÉŒ»İ‚ÌlocalScale’l‚ğ‘ã“ü
+            //tempå¤‰æ•°ã«ç¾åœ¨ã®localScaleå€¤ã‚’ä»£å…¥
             Vector3 temp = transform.localScale;
 
-            //Œ»İ‚ÌƒL[“ü—Í’lx‚ğtemp.x‚É‘ã“ü
+            //ç¾åœ¨ã®ã‚­ãƒ¼å…¥åŠ›å€¤xã‚’temp.xã«ä»£å…¥
             temp.x = x;
 
-            //Œü‚«‚ª•Ï‚í‚é‚É¬”‚É‚È‚é‚ÆƒLƒƒƒ‰‚ªk‚ñ‚ÅŒ©‚¦‚Ä‚µ‚Ü‚¤‚Ì‚Å®”’l‚É‚·‚é
+            //å‘ããŒå¤‰ã‚ã‚‹æ™‚ã«å°æ•°ã«ãªã‚‹ã¨ã‚­ãƒ£ãƒ©ãŒç¸®ã‚“ã§è¦‹ãˆã¦ã—ã¾ã†ã®ã§æ•´æ•°å€¤ã«ã™ã‚‹
             if(temp.x > 0)
             {
-                //”š‚ª0‚æ‚è‚à‘å‚«‚¯‚ê‚Î‚·‚×‚Ä1‚É‚·‚é
+                //æ•°å­—ãŒ0ã‚ˆã‚Šã‚‚å¤§ãã‘ã‚Œã°ã™ã¹ã¦1ã«ã™ã‚‹
                 temp.x = scale;
             }
             else
             {
-                //”š‚ª0‚æ‚è‚à¬‚³‚¯‚ê‚Î‚·‚×‚Ä-1‚É‚·‚é
+                //æ•°å­—ãŒ0ã‚ˆã‚Šã‚‚å°ã•ã‘ã‚Œã°ã™ã¹ã¦-1ã«ã™ã‚‹
                 temp.x = -scale;
             }
 
-            //ƒLƒƒƒ‰‚ÌŒü‚«‚ğˆÚ“®•ûŒü‚É‡‚í‚¹‚é
+            //ã‚­ãƒ£ãƒ©ã®å‘ãã‚’ç§»å‹•æ–¹å‘ã«åˆã‚ã›ã‚‹
             transform.localScale = temp;
 
-            //‡@‘Ò‹@ó‘Ô‚ÌƒAƒjƒ‚ÌÄ¶‚ğ~‚ß‚ÄA‘–‚éƒAƒjƒ‚ÌÄ¶‚Ö‚Ì‘JˆÚ‚ğs‚¤
-            anim.SetFloat("Run", 0.5f); //™’Ç‰Á RunƒAƒjƒ[ƒVƒ‡ƒ“‚É‘Î‚µ‚ÄA0.5f‚Ì’l‚ğî•ñ‚Æ‚µ‚Ä“n‚·B‘JˆÚğŒ‚ªgreater 0.1‚È‚Ì‚ÅA0.1ˆÈã‚Ì’l‚ğ“n‚·‚ÆğŒ‚ª¬—§‚µ‚ÄRunƒAƒjƒ[ƒVƒ‡ƒ“‚ªÄ¶‚³‚ê‚é
+            //â‘ å¾…æ©ŸçŠ¶æ…‹ã®ã‚¢ãƒ‹ãƒ¡ã®å†ç”Ÿã‚’æ­¢ã‚ã¦ã€èµ°ã‚‹ã‚¢ãƒ‹ãƒ¡ã®å†ç”Ÿã¸ã®é·ç§»ã‚’è¡Œã†
+            anim.SetFloat("Run", 0.5f); //â˜†è¿½åŠ  Runã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã«å¯¾ã—ã¦ã€0.5fã®å€¤ã‚’æƒ…å ±ã¨ã—ã¦æ¸¡ã™ã€‚é·ç§»æ¡ä»¶ãŒgreater 0.1ãªã®ã§ã€0.1ä»¥ä¸Šã®å€¤ã‚’æ¸¡ã™ã¨æ¡ä»¶ãŒæˆç«‹ã—ã¦Runã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒå†ç”Ÿã•ã‚Œã‚‹
             anim.SetBool("Idle", false);
         }
         else
         {
-            //‡AUnity6000ˆÈ~‚Ìê‡
+            //â‘¡Unity6000ä»¥é™ã®å ´åˆ
             rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
 
-            //‡A‘–‚éƒAƒjƒ‚ÌÄ¶‚ğ~‚ß‚ÄA‘Ò‹@ó‘Ô‚ÌƒAƒjƒ‚ÌÄ¶‚Ö‚Ì‘JˆÚ‚ğs‚¤
-            anim.SetFloat("Run", 0.0f); //™’Ç‰Á RunƒAƒjƒ[ƒVƒ‡ƒ“‚É‘Î‚µ‚ÄA0.1f‚Ì’l‚ğî•ñ‚Æ‚µ‚Ä“n‚·B‘JˆÚğŒ‚ªless 0.1‚È‚Ì‚ÅA0.1ˆÈ‰º‚Ì’l‚ğ“n‚·‚ÆğŒ‚ª¬—§‚µ‚ÄRunƒAƒjƒ[ƒVƒ‡ƒ“‚ª’â~‚³‚ê‚é
+            //â‘¡èµ°ã‚‹ã‚¢ãƒ‹ãƒ¡ã®å†ç”Ÿã‚’æ­¢ã‚ã¦ã€å¾…æ©ŸçŠ¶æ…‹ã®ã‚¢ãƒ‹ãƒ¡ã®å†ç”Ÿã¸ã®é·ç§»ã‚’è¡Œã†
+            anim.SetFloat("Run", 0.0f); //â˜†è¿½åŠ  Runã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ã«å¯¾ã—ã¦ã€0.1fã®å€¤ã‚’æƒ…å ±ã¨ã—ã¦æ¸¡ã™ã€‚é·ç§»æ¡ä»¶ãŒless 0.1ãªã®ã§ã€0.1ä»¥ä¸‹ã®å€¤ã‚’æ¸¡ã™ã¨æ¡ä»¶ãŒæˆç«‹ã—ã¦Runã‚¢ãƒ‹ãƒ¡ãƒ¼ã‚·ãƒ§ãƒ³ãŒåœæ­¢ã•ã‚Œã‚‹
             anim.SetBool("Idle", true);
         }
 
-        //Œ»İ‚ÌˆÊ’uî•ñ‚ªˆÚ“®”ÍˆÍ‚Ì§ŒÀŠD‚ğ’´‚¦‚Ä‚¢‚È‚¢‚©Šm”F‚·‚éB’´‚¦‚Ä‚¢‚½‚çA§ŒÀ”ÍˆÍ“à‚Éû‚ß‚é
+        //ç¾åœ¨ã®ä½ç½®æƒ…å ±ãŒç§»å‹•ç¯„å›²ã®åˆ¶é™ç°ã‚’è¶…ãˆã¦ã„ãªã„ã‹ç¢ºèªã™ã‚‹ã€‚è¶…ãˆã¦ã„ãŸã‚‰ã€åˆ¶é™ç¯„å›²å†…ã«åã‚ã‚‹
         float posX = Mathf.Clamp(transform.position.x, -limitPosX, limitPosX);
         float posY = Mathf.Clamp(transform.position.y, -limitPosY, limitPosY);
 
-        //Œ»İ‚ÌˆÊ’u‚ğXV(§ŒÀ”ÍˆÍ‚ğ’´‚¦‚½ê‡A‚±‚±‚ÅˆÚ“®‚Ì”ÍˆÍ‚ğ§ŒÀ‚·‚é)
+        //ç¾åœ¨ã®ä½ç½®ã‚’æ›´æ–°(åˆ¶é™ç¯„å›²ã‚’è¶…ãˆãŸå ´åˆã€ã“ã“ã§ç§»å‹•ã®ç¯„å›²ã‚’åˆ¶é™ã™ã‚‹)
         transform.position = new Vector2(posX, posY);
     }
 
     ///<summary>
-    ///ƒoƒ‹[ƒ“¶¬
+    ///ãƒãƒ«ãƒ¼ãƒ³ç”Ÿæˆ
     ///</summary>
     ///<returns></returns>
     private IEnumerator GenerateBallon()
     {
-        //‘S‚Ä‚Ì”z—ñ‚Ì—v‘f‚Éƒoƒ‹[ƒ“‚ª‘¶İ‚µ‚Ä‚¢‚éê‡‚É‚ÍAƒoƒ‹[ƒ“‚ğ¶¬‚µ‚È‚¢
+        //å…¨ã¦ã®é…åˆ—ã®è¦ç´ ã«ãƒãƒ«ãƒ¼ãƒ³ãŒå­˜åœ¨ã—ã¦ã„ã‚‹å ´åˆã«ã¯ã€ãƒãƒ«ãƒ¼ãƒ³ã‚’ç”Ÿæˆã—ãªã„
         if (ballons[1] != null)
         {
             yield break;
         }
 
-        //¶¬’†ó‘Ô‚É‚·‚é
+        //ç”Ÿæˆä¸­çŠ¶æ…‹ã«ã™ã‚‹
         isGenerating = true;
 
-        //1‚Â‚ß‚Ì”z—ñ‚Ì—v‘f‚ª‹ó‚È‚ç
+        //isFirstGenerateBallonå¤‰æ•°ã®å€¤ãŒfalse,ã¤ã¾ã‚Šã€ã‚²ãƒ¼ãƒ ã‚’é–‹å§‹ã—ã¦ã‹ã‚‰ã€ã¾ã ãƒãƒ«ãƒ¼ãƒ³ã‚’1å›ã‚‚ç”Ÿæˆã—ã¦ã„ãªã„ãªã‚‰
+        if (isFirstGenerateBallon == false)
+        {
+            //åˆå›ãƒãƒ«ãƒ¼ãƒ³ç”Ÿæˆã‚’è¡Œã£ãŸã¨åˆ¤æ–­ã—ã€trueã«å¤‰æ›´ã™ã‚‹ = æ¬¡å›ä»¥é™ã¯ãƒãƒ«ãƒ¼ãƒ³ã‚’ç”Ÿæˆã—ã¦ã‚‚ã€ifæ–‡å†…ã®æ¡ä»¶ã‚’æº€ãŸã•ãªããªã‚Šã€ã“ã®å‡¦ç†ã«ã¯å…¥ã‚‰ãªã„
+            isFirstGenerateBallon = true;
+
+            Debug.Log("åˆå›ã®ãƒãƒ«ãƒ¼ãƒ³ç”Ÿæˆ");
+
+            //startCheckerå¤‰æ•°ã«ä»£å…¥ã•ã‚Œã¦ã„ã‚‹StartCheckerã‚¹ã‚¯ãƒªãƒ—ãƒˆã«ã‚¢ã‚¯ã‚»ã‚¹ã—ã¦ã€SetInitiSpeedãƒ¡ã‚½ãƒƒãƒ‰ã‚’å®Ÿè¡Œã™ã‚‹
+            startChecker.SetInitialSpeed();
+        }
+
+        //1ã¤ã‚ã®é…åˆ—ã®è¦ç´ ãŒç©ºãªã‚‰
         if (ballons[0] == null)
         {
-            //1‚Â–Ú‚Ìƒoƒ‹[ƒ“¶¬‚ğ¶¬‚µ‚ÄA1”Ô–Ú‚Ì”z—ñ‚Ö‘ã“ü
+            //1ã¤ç›®ã®ãƒãƒ«ãƒ¼ãƒ³ç”Ÿæˆã‚’ç”Ÿæˆã—ã¦ã€1ç•ªç›®ã®é…åˆ—ã¸ä»£å…¥
             ballons[0] = Instantiate(ballonPrefab, ballonTrans[0]);
+
+            ballons[0].GetComponent<Ballon>().SetUpBallon(this);
         }
         else
         {
-            //2‚Â–Ú‚Ìƒoƒ‹[ƒ“¶¬‚ğ¶¬‚µ‚ÄA2”Ô–Ú‚Ì”z—ñ‚Ö‘ã“ü
+            //2ã¤ç›®ã®ãƒãƒ«ãƒ¼ãƒ³ç”Ÿæˆã‚’ç”Ÿæˆã—ã¦ã€2ç•ªç›®ã®é…åˆ—ã¸ä»£å…¥
             ballons[1] = Instantiate(ballonPrefab, ballonTrans[1]);
+
+            ballons[1].GetComponent<Ballon>().SetUpBallon(this);
         }
 
-        //¶¬ŠÔ•ª‘Ò‹@
+        //ç”Ÿæˆæ™‚é–“åˆ†å¾…æ©Ÿ
         yield return new WaitForSeconds(generateTime);
 
-        //¶¬’†ó‘ÔI—¹BÄ“x¶¬‚Å‚«‚é‚æ‚¤‚É‚·‚é
+        //ç”Ÿæˆä¸­çŠ¶æ…‹çµ‚äº†ã€‚å†åº¦ç”Ÿæˆã§ãã‚‹ã‚ˆã†ã«ã™ã‚‹
         isGenerating = false;
+    }
+
+    private void OnCollisionEnter2D(Collision2D col)
+    {
+        //æ¥è§¦ã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®TagãŒEnemyãªã‚‰
+        if(col.gameObject.tag == "Enemy")
+        {
+            //ã‚­ãƒ£ãƒ©ã¨æ•µã®ä½ç½®ã‹ã‚‰è·é›¢ã¨æ–¹å‘ã‚’è¨ˆç®—ã—ã¦ã€æ­£è¦åŒ–å‡¦ç†ã‚’è¡Œã„ã€directionå¤‰æ•°ã¸ä»£å…¥
+            Vector3 direction = (transform.position - col.transform.position).normalized;
+
+            //æ•µã®åå¯¾å´ã«ã‚­ãƒ£ãƒ©ã‚’å¹ãé£›ã°ã™
+            transform.position += direction * knockbackPower;
+        }
+    }
+
+    ///<summary>
+    ///ãƒãƒ«ãƒ¼ãƒ³ç ´å£Š
+    ///</summary>
+    public void DestroyBallon()
+    {
+        //TODOå¾Œç¨‹ã€ãƒãƒ«ãƒ¼ãƒ³ãŒç ´å£Šã•ã‚Œã‚‹éš›ã«ã€Œå‰²ã‚ŒãŸã€ã‚ˆã†ã«è¦‹ãˆã‚‹ã‚¢ãƒ‹ãƒ¡æ¼”å‡ºã‚’è¿½åŠ ã™ã‚‹
+        if (ballons[1] != null)
+        {
+            Destroy(ballons[1]);
+        }
+        else if (ballons[0] != null)
+        {
+            Destroy(ballons[0]);
+        }
+    }
+
+    //IsTriggerãŒã‚ªãƒ³ã®ã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’é€šéã—ãŸå ´åˆã«å‘¼ã³å‡ºã•ã‚Œã‚‹ãƒ¡ã‚½ãƒƒãƒ‰
+    private void OnTriggerEnter2D(Collider2D col)
+    {
+        //é€šéã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®TagãŒCoinã®å ´åˆ
+        if (col.gameObject.tag == "Coin")
+        {
+            //é€šéã—ãŸã‚³ãƒ©ã‚¤ãƒ€ãƒ¼ã‚’æŒã¤ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®æŒã¤Coinã‚¹ã‚¯ãƒªãƒ—ãƒˆã‚’å–å¾—ã—ã€pointå¤‰æ•°ã®å€¤ã‚’ã‚­ãƒ£ãƒ©ã®æŒã¤coinPointå¤‰æ•°ã«åŠ ç®—
+            coinPoint += col.gameObject.GetComponent<Coin>().point;
+
+            //é€šéã—ãŸã‚³ã‚¤ãƒ³ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç ´å£Šã™ã‚‹
+            Destroy(col.gameObject);
+        }
     }
 }

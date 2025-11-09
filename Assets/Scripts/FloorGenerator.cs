@@ -1,48 +1,48 @@
-using System.Collections;
+﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class FloorGenerator : MonoBehaviour
 {
     [SerializeField]
-    private GameObject aerialFloorPrefab; //�v���t�@�u�ɂ���AerialFloor_Mid�Q�[���I�u�W�F�N�g���C���X�y�N�^�[����A�T�C������
+    private GameObject aerialFloorPrefab; //プレファブにしたAerialFloor_Midゲームオブジェクトをインスペクターからアサインする
 
     [SerializeField]
-    private Transform generateTran;  //�v���t�@�u�̃N���[���𐶐�����ʒu�̐ݒ�
+    private Transform generateTran;  //プレファブのクローンを生成する位置の設定
 
-    [Header("�����܂ł̑ҋ@����")]
-    public float waitTime;   //1�񐶐�����܂ł̑ҋ@���ԁB�ǂ̈ʂ̊Ԋu�Ŏ����������s������ݒ�
+    [Header("生成までの待機時間")]
+    public float waitTime;   //1回生成するまでの待機時間。どの位の間隔で自動生成を行うかを設定
 
-    private float timer;  //�ҋ@���Ԃ̌v���p
+    private float timer;  //待機時間の計測用
 
     void Update()
     {
-        //���Ԃ��v������
+        //時間を計測する
         timer += Time.deltaTime;
 
-        //�v�����Ă��鎞�Ԃ�waitTime�̒l�Ɠ������A��������
+        //計測している時間がwaitTimeの値と同じか、超えたら
         if (timer >= waitTime)
         {
-            //����̌v���p�ɁAtimer��0�ɂ���
+            //次回の計測用に、timerを0にする
             timer = 0;
 
-            //�N���[�������p�̃��\�b�h���Ăяo��
+            //クローン生成用のメソッドを呼び出す
             GenerateFloor();
         }
     }
 
     ///<summary>
-    ///�v���t�@�u�����ɃN���[���̃Q�[���I�u�W�F�N�g�𐶐�
+    ///プレファブを元にクローンのゲームオブジェクトを生成
     ///</summary>
     private void GenerateFloor()
     {
-        //�󒆏��̃v���t�@�u�����ɃN���[���̃Q�[���I�u�W�F�N�g�𐶐�
+        //空中床のプレファブを元にクローンのゲームオブジェクトを生成
         GameObject obj = Instantiate(aerialFloorPrefab, generateTran);
 
-        //�����_���Ȓl���擾
+        //ランダムな値を取得
         float randomPosY = Random.Range(-4.0f, 4.0f);
 
-        //�������ꂽ�Q�[���I�u�W�F�N�g��Y���Ƀ����_���Ȓl�����Z���āA��������邽�тɍ����̈ʒu��ύX����
+        //生成されたゲームオブジェクトのY軸にランダムな値を加算して、生成されるたびに高さの位置を変更する
         obj.transform.position = new Vector2(obj.transform.position.x, obj.transform.position.y + randomPosY);
     }
 }

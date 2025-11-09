@@ -234,8 +234,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 346117347}
-  - component: {fileID: 346117348}
-  - component: {fileID: 346117349}
   m_Layer: 8
   m_Name: Ground_Start
   m_TagString: Untagged
@@ -262,31 +260,6 @@ Transform:
   - {fileID: 1810956976}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &346117348
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346117346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d11c57d099e7df7489d9bf1e044de93b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::MoveObject
-  moveSpeed: 0
---- !u!114 &346117349
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 346117346}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ffed7a4edcf908d46a56062a350d1abd, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::StartChecker
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -693,7 +666,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9277cee2ff70cce4db9709b0e7e0806e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  isFirstGenerateBallon: 0
   moveSpeed: 3
   jumpPower: 300
   isGrounded: 0
@@ -707,12 +679,9 @@ MonoBehaviour:
   ballonPrefab: {fileID: 4400032249432766716, guid: f3f0b121e1858eb41a93fa2f7a6939f2, type: 3}
   generateTime: 2
   isGenerating: 0
-  knockbackPower: 2
-  coinPoint: 0
   groundLayer:
     serializedVersion: 2
     m_Bits: 256
-  startChecker: {fileID: 346117349}
 --- !u!1 &1022457472
 GameObject:
   m_ObjectHideFlags: 0
@@ -874,7 +843,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1390697716}
   - component: {fileID: 1390697715}
-  - component: {fileID: 1390697717}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -912,23 +880,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1390697717
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390697714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 21774188fa3d6b04898b07071626ca46, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::RandomObjectGenerator
-  objPrefab:
-  - {fileID: 4917431450412608190, guid: 74fac52722e355140a0d0a5e8ee32a63, type: 3}
-  - {fileID: 2940007626015564007, guid: eec8308e3de4ead46854b0ab19c01877, type: 3}
-  generateTran: {fileID: 1022457473}
-  waitTimeRange: {x: 3, y: 7}
 --- !u!1001 &1615990387
 PrefabInstance:
   m_ObjectHideFlags: 0
