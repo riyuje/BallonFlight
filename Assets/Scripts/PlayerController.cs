@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private float limitPosX = 8.5f;  //横方向の制限値
     private float limitPosY = 4.45f; //縦方向の制限値
 
+    public bool isGameOver = false;  //GameOver状態の判定用。trueならゲームオーバー
     public bool isFirstGenerateBallon;  //初めてバルーンを生成したかを判定するための変数(後程外部スクリプトでも利用するためpublicで宣言する)
 
     public float moveSpeed;  //移動速度
@@ -30,8 +31,9 @@ public class PlayerController : MonoBehaviour
     public bool isGenerating; //バルーンを生成中かどうかを判定する。falseなら生成していない状態。trueは生成中の状態。
 
     public float knockbackPower;
-
     public int coinPoint;
+
+    public UIManager uiManager;
 
     [SerializeField, Header("Linecast用 地面判定レイヤー")]
     private LayerMask groundLayer;
@@ -113,6 +115,11 @@ public class PlayerController : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (isGameOver == true)
+        {
+            return;
+        }
+
         //移動
         Move();
     }
@@ -263,8 +270,24 @@ public class PlayerController : MonoBehaviour
             //通過したコライダーを持つゲームオブジェクトの持つCoinスクリプトを取得し、point変数の値をキャラの持つcoinPoint変数に加算
             coinPoint += col.gameObject.GetComponent<Coin>().point;
 
+            uiManager.UpdateDisplayScore(coinPoint);
+
             //通過したコインのゲームオブジェクトを破壊する
             Destroy(col.gameObject);
         }
+    }
+
+    ///<summary>
+    ///ゲームオーバー
+    ///</summary>
+    public void GameOver()
+    {
+        isGameOver = true;
+
+        //ConsoleビューにisGameOver変数の値を表示する。ここが実行されるとtrueと表示される
+        Debug.Log(isGameOver);
+
+        //画面にゲームオーバー表示を行う
+        uiManager.DisplayGameOverInfo();
     }
 }

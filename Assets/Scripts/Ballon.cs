@@ -20,7 +20,7 @@ public class Ballon : MonoBehaviour
         transform.DOScale(scale, 0.2f).SetEase(Ease.InBounce);
 
         //左右にふわふわさせる
-        tweener = transform.DOLocalMoveX(0.02f, 0.2f).SetEase(Ease.Flash).SetLoops(-1, LoopType.Yoyo);
+        tweener = transform.DOLocalMoveX(0.02f, 0.2f).SetEase(Ease.Flash).SetLoops(-1, LoopType.Yoyo).SetLink(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D col)
@@ -28,7 +28,7 @@ public class Ballon : MonoBehaviour
         if(col.gameObject.tag == "Enemy")
         {
             //左右にふわふわさせるループアニメを破棄する
-            tweener.Kill();
+            //tweener.Kill();
 
             //PlayerControllerのDestroyBallonメソッドを呼び出し、バルーンの破壊処理を行う
             playerController.DestroyBallon();

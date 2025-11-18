@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,12 +10,12 @@ public class RandomObjectGenerator : MonoBehaviour
     [SerializeField]
     private Transform generateTran;
 
-    [Header("¶¬‚Ü‚Å‚Ì‘Ò‹@ŠÔ")]
-    public Vector2 waitTimeRange;  //1‰ñ¶¬‚·‚é‚Ü‚Å‚Ì‘Ò‹@ŠÔB‚Ç‚ÌˆÊ‚ÌŠÔŠu‚Å©“®¶¬‚ğs‚¤‚©İ’è
+    [Header("ç”Ÿæˆã¾ã§ã®å¾…æ©Ÿæ™‚é–“")]
+    public Vector2 waitTimeRange;  //1å›ç”Ÿæˆã™ã‚‹ã¾ã§ã®å¾…æ©Ÿæ™‚é–“ã€‚ã©ã®ä½ã®é–“éš”ã§è‡ªå‹•ç”Ÿæˆã‚’è¡Œã†ã‹è¨­å®š
 
     private float waitTime;
 
-    private float timer;  //‘Ò‹@ŠÔ‚ÌŒv‘ª—p
+    private float timer;  //å¾…æ©Ÿæ™‚é–“ã®è¨ˆæ¸¬ç”¨
     
     void Start()
     {
@@ -23,48 +23,48 @@ public class RandomObjectGenerator : MonoBehaviour
     }
 
     /// <summary>
-    /// ¶¬‚Ü‚Å‚ÌŠÔ‚ğİ’è
+    /// ç”Ÿæˆã¾ã§ã®æ™‚é–“ã‚’è¨­å®š
     /// </summary>
     private void SetGenerateTime()
     {
-        //¶¬‚Ü‚Å‚Ì‘Ò‹@ŠÔ‚ğAÅ¬’l‚ÆÅ‘å’l‚ÌŠÔ‚©‚çƒ‰ƒ“ƒ_ƒ€‚Åİ’è
+        //ç”Ÿæˆã¾ã§ã®å¾…æ©Ÿæ™‚é–“ã‚’ã€æœ€å°å€¤ã¨æœ€å¤§å€¤ã®é–“ã‹ã‚‰ãƒ©ãƒ³ãƒ€ãƒ ã§è¨­å®š
         waitTime = Random.Range(waitTimeRange.x, waitTimeRange.y);
     }
 
     void Update()
     {
-        //Œv‘ª—pƒ^ƒC‚ß[‚ğ‰ÁZ
+        //è¨ˆæ¸¬ç”¨ã‚¿ã‚¤ã‚ãƒ¼ã‚’åŠ ç®—
         timer += Time.deltaTime;
 
-        //Œv‘ª—pƒ^ƒCƒ}[‚ª‘Ò‹@ŠÔ‚Æ“¯‚¶‚©’´‚¦‚½‚ç
+        //è¨ˆæ¸¬ç”¨ã‚¿ã‚¤ãƒãƒ¼ãŒå¾…æ©Ÿæ™‚é–“ã¨åŒã˜ã‹è¶…ãˆãŸã‚‰
         if(timer >= waitTime)
         {
-            //ƒ^ƒCƒ}[‚ğƒŠƒZƒbƒg‚µ‚ÄAÄ“xŒv‘ª‚Å‚«‚éó‘Ô‚É‚·‚é
+            //ã‚¿ã‚¤ãƒãƒ¼ã‚’ãƒªã‚»ãƒƒãƒˆã—ã¦ã€å†åº¦è¨ˆæ¸¬ã§ãã‚‹çŠ¶æ…‹ã«ã™ã‚‹
             timer = 0;
 
-            //ƒ‰ƒ“ƒ_ƒ€‚ÈƒIƒuƒWƒFƒNƒg‚ğ¶¬
+            //ãƒ©ãƒ³ãƒ€ãƒ ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
             RandomGenerateObject();
         }
     }
 
     ///<summary>
-    ///ƒ‰ƒ“ƒ_ƒ€‚ÈƒIƒuƒWƒFƒNƒg‚ğ¶¬
+    ///ãƒ©ãƒ³ãƒ€ãƒ ãªã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
     ///</summary>
     private void RandomGenerateObject()
     {
-        //¶¬‚·‚éƒvƒŒƒtƒ@ƒu‚Ì”Ô†‚ğƒ‰ƒ“ƒ_ƒ€‚Éİ’è
+        //ç”Ÿæˆã™ã‚‹ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ–ã®ç•ªå·ã‚’ãƒ©ãƒ³ãƒ€ãƒ ã«è¨­å®š
         int randomIndex = Random.Range(0, objPrefab.Length);
 
-        //ƒvƒŒƒtƒ@ƒu‚ğŒ³‚ÉƒNƒ[ƒ“‚ÌƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ğ¶¬
+        //ãƒ—ãƒ¬ãƒ•ã‚¡ãƒ–ã‚’å…ƒã«ã‚¯ãƒ­ãƒ¼ãƒ³ã®ã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã‚’ç”Ÿæˆ
         GameObject obj = Instantiate(objPrefab[randomIndex], generateTran);
 
-        //ƒ‰ƒ“ƒ_ƒ€‚È’l‚ğæ“¾
+        //ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤ã‚’å–å¾—
         float randomPosY = Random.Range(-4.0f, 4.0f);
 
-        //¶¬‚³‚ê‚½ƒQ[ƒ€ƒIƒuƒWƒFƒNƒg‚ÌY²‚Éƒ‰ƒ“ƒ_ƒ€‚È’l‚ğ‰ÁZ‚µ‚ÄA¶¬‚³‚ê‚é‚½‚Ñ‚É‚‚³‚ÌˆÊ’u‚ğ•ÏX‚·‚é
+        //ç”Ÿæˆã•ã‚ŒãŸã‚²ãƒ¼ãƒ ã‚ªãƒ–ã‚¸ã‚§ã‚¯ãƒˆã®Yè»¸ã«ãƒ©ãƒ³ãƒ€ãƒ ãªå€¤ã‚’åŠ ç®—ã—ã¦ã€ç”Ÿæˆã•ã‚Œã‚‹ãŸã³ã«é«˜ã•ã®ä½ç½®ã‚’å¤‰æ›´ã™ã‚‹
         obj.transform.position = new Vector2(obj.transform.position.x, obj.transform.position.y + randomPosY);
 
-        //Ÿ‚Ì¶¬‚Ü‚Å‚ÌŠÔ‚ğƒZƒbƒg‚·‚é
+        //æ¬¡ã®ç”Ÿæˆã¾ã§ã®æ™‚é–“ã‚’ã‚»ãƒƒãƒˆã™ã‚‹
         SetGenerateTime();
     }
 }
