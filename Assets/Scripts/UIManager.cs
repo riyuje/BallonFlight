@@ -25,6 +25,17 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private Button btnInfo;
 
+    [SerializeField]
+    private Button btnTitle;
+
+    [SerializeField]
+    private Text IbIStart;
+
+    [SerializeField]
+    private CanvasGroup canvasGroupTitle;
+
+    private Tweener tweener;
+
     ///<summary>
     ///スコア表示を更新する
     ///</summary>
@@ -75,5 +86,70 @@ public class UIManager : MonoBehaviour
             Debug.Log("Restart");
             SceneManager.LoadScene(sceneName);
         });
+    }
+
+    private void Start()
+    {
+        //タイトル表示
+        SwitchDisplayTitle(true, 1.0f);
+
+        //ボタンのOnClickイベントにメソッドを登録
+        btnTitle.onClick.AddListener(OnClickTitle);
+    }
+
+    ///<summary>
+    ///タイトル表示
+    ///</summary>
+    public void SwitchDisplayTitle(bool isSwitch, float alpha)
+    {
+        if (isSwitch) canvasGroupTitle.alpha = 0;
+
+        canvasGroupTitle.DOFade(alpha, 1.0f).SetEase(Ease.Linear).OnComplete(() =>
+        {
+            IbIStart.gameObject.SetActive(isSwitch);
+        });
+
+        if(tweener == null)
+        {
+            //Tap Startの文字をゆっくり点滅させる
+            tweener = IbIStart.gameObject.GetComponent<CanvasGroup>().DOFade(0, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+        }
+        else
+        {
+            tweener.Kill();
+        }
+    }
+
+    ///<summary>
+    ///タイトル表示中に画面をクリックした際の処理
+    ///</summary>
+    private void OnClickTitle()
+    {
+        //ボタンのメソッドを削除して重複タップ防止
+        btnTitle.onClick.RemoveAllListeners();
+
+        //タイトルを徐々に非表示
+        SwitchDisplayTitle(false, 0.0f);
+
+        //タイトル表示が消えるのと入れ替わりで、ゲームスタートの文字を表示する
+        StartCoroutine(DisplayGameStartInfo());
+    }
+
+    ///<summary>
+    ///ゲームスタート表示
+    ///</summary>
+    ///<returns></returns>
+    public IEnumerator DisplayGameStartInfo()
+    {
+        yield return new WaitForSeconds(0.5f);
+
+        canvasGroupInfo.alpha = 0;
+        canvasGroupInfo.DOFade(1.0f, 0.5f);
+        txtInfo.text = "Game Start!";
+
+        yield return new WaitForSeconds(1.0f);
+        canvasGroupInfo.DOFade(0f, 0.5f);
+
+        canvasGroupTitle.gameObject.SetActive(false);
     }
 }
