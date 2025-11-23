@@ -15,6 +15,8 @@ public class FloorGenerator : MonoBehaviour
 
     private float timer;  //待機時間の計測用
 
+    private GameDirector gameDirector;
+
     void Update()
     {
         //時間を計測する
@@ -44,5 +46,20 @@ public class FloorGenerator : MonoBehaviour
 
         //生成されたゲームオブジェクトのY軸にランダムな値を加算して、生成されるたびに高さの位置を変更する
         obj.transform.position = new Vector2(obj.transform.position.x, obj.transform.position.y + randomPosY);
+
+        //生成数をカウントアップ
+        gameDirector.GenerateCount++;
+    }
+
+    ///<summary>
+    ///FloorGeneratorの準備
+    ///</summary>
+    ///<param name="gameDirector"></param>
+    public void SetUpGenerator(GameDirector gameDirector)
+    {
+        this.gameDirector = gameDirector;
+
+        //TODO他にも初期設定したい情報がある場合にはここに処理を追加する
+
     }
 }

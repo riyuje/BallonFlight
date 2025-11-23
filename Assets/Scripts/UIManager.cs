@@ -29,7 +29,7 @@ public class UIManager : MonoBehaviour
     private Button btnTitle;
 
     [SerializeField]
-    private Text IbIStart;
+    private Text lblStart;
 
     [SerializeField]
     private CanvasGroup canvasGroupTitle;
@@ -39,6 +39,7 @@ public class UIManager : MonoBehaviour
     ///<summary>
     ///スコア表示を更新する
     ///</summary>
+    ///<param name="score"></param>
     public void UpdateDisplayScore(int score)
     {
         txtScore.text = score.ToString();
@@ -106,13 +107,13 @@ public class UIManager : MonoBehaviour
 
         canvasGroupTitle.DOFade(alpha, 1.0f).SetEase(Ease.Linear).OnComplete(() =>
         {
-            IbIStart.gameObject.SetActive(isSwitch);
+            lblStart.gameObject.SetActive(isSwitch);
         });
 
         if(tweener == null)
         {
             //Tap Startの文字をゆっくり点滅させる
-            tweener = IbIStart.gameObject.GetComponent<CanvasGroup>().DOFade(0, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
+            tweener = lblStart.gameObject.GetComponent<CanvasGroup>().DOFade(0, 1.0f).SetEase(Ease.Linear).SetLoops(-1, LoopType.Yoyo);
         }
         else
         {

@@ -192,7 +192,7 @@ MonoBehaviour:
   canvasTran: {fileID: 655076235}
   btnInfo: {fileID: 1489139167}
   btnTitle: {fileID: 802347336}
-  lblStart: {fileID: 1912670560}
+  IbIStart: {fileID: 1912670560}
   canvasGroupTitle: {fileID: 802347339}
 --- !u!4 &26753473
 Transform:
@@ -1219,6 +1219,7 @@ GameObject:
   - component: {fileID: 979625645}
   - component: {fileID: 979625647}
   - component: {fileID: 979625646}
+  - component: {fileID: 979625648}
   m_Layer: 5
   m_Name: txtInfo
   m_TagString: Untagged
@@ -1287,6 +1288,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979625644}
   m_CullTransparentMesh: 1
+--- !u!225 &979625648
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979625644}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1022457472
 GameObject:
   m_ObjectHideFlags: 0
@@ -1331,7 +1344,7 @@ GameObject:
   - component: {fileID: 1043969885}
   - component: {fileID: 1043969887}
   m_Layer: 5
-  m_Name: lblTitle
+  m_Name: IbITitle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1695,7 +1708,7 @@ GameObject:
   - component: {fileID: 1117970449}
   - component: {fileID: 1117970448}
   m_Layer: 5
-  m_Name: lblScore
+  m_Name: IbIScore
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1774,7 +1787,6 @@ GameObject:
   - component: {fileID: 1390697716}
   - component: {fileID: 1390697715}
   - component: {fileID: 1390697717}
-  - component: {fileID: 1390697718}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -1828,24 +1840,7 @@ MonoBehaviour:
   - {fileID: 4917431450412608190, guid: 74fac52722e355140a0d0a5e8ee32a63, type: 3}
   - {fileID: 2940007626015564007, guid: eec8308e3de4ead46854b0ab19c01877, type: 3}
   generateTran: {fileID: 1022457473}
-  waitTimeRange: {x: 5, y: 7}
---- !u!114 &1390697718
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1390697714}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 23958d74f4ae93a4d802b945009ec9a6, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameDirector
-  goalHousePrefab: {fileID: 7358228321281720433, guid: 484b1720e7c5cec48b4741713c57afa7, type: 3}
-  playerController: {fileID: 814711144}
-  floorGenerators:
-  - {fileID: 1390697715}
-  clearCount: 2
+  waitTimeRange: {x: 3, y: 7}
 --- !u!1 &1489139162
 GameObject:
   m_ObjectHideFlags: 0
@@ -2417,7 +2412,7 @@ GameObject:
   - component: {fileID: 1912670560}
   - component: {fileID: 1912670562}
   m_Layer: 5
-  m_Name: lblStart
+  m_Name: IbIStart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
