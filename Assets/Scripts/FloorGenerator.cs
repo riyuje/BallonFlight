@@ -17,8 +17,15 @@ public class FloorGenerator : MonoBehaviour
 
     private GameDirector gameDirector;
 
+    private bool isActivate;  //生成の状態を設定し、生成を行うかどうかの判定に利用する。trueなら生成し、falseなら生成しない
+
     void Update()
     {
+        //停止中は生成を行わない
+        if (isActivate == false)
+        {
+            return;
+        }
         //時間を計測する
         timer += Time.deltaTime;
 
@@ -61,5 +68,14 @@ public class FloorGenerator : MonoBehaviour
 
         //TODO他にも初期設定したい情報がある場合にはここに処理を追加する
 
+    }
+
+    ///<summary>
+    ///生成状態のオン/オフを切り替え
+    ///</summary>
+    ///<param name="isSwitch"></param>
+    public void SwitchActivation(bool isSwitch)
+    {
+        isActivate = isSwitch;
     }
 }

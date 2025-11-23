@@ -193,7 +193,8 @@ MonoBehaviour:
   btnInfo: {fileID: 1489139167}
   btnTitle: {fileID: 802347336}
   lblStart: {fileID: 1912670560}
-  canvasGroupTitle: {fileID: 802347339}
+  canvasGroupTitle: {fileID: 374619982}
+  txtInfoCanvasGroup: {fileID: 979625648}
 --- !u!4 &26753473
 Transform:
   m_ObjectHideFlags: 0
@@ -869,7 +870,6 @@ GameObject:
   - component: {fileID: 802347338}
   - component: {fileID: 802347337}
   - component: {fileID: 802347336}
-  - component: {fileID: 802347339}
   m_Layer: 5
   m_Name: btnTitle
   m_TagString: Untagged
@@ -980,18 +980,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 802347334}
   m_CullTransparentMesh: 1
---- !u!225 &802347339
-CanvasGroup:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 802347334}
-  m_Enabled: 1
-  m_Alpha: 1
-  m_Interactable: 1
-  m_BlocksRaycasts: 1
-  m_IgnoreParentGroups: 0
 --- !u!1 &814711138
 GameObject:
   m_ObjectHideFlags: 0
@@ -1219,6 +1207,7 @@ GameObject:
   - component: {fileID: 979625645}
   - component: {fileID: 979625647}
   - component: {fileID: 979625646}
+  - component: {fileID: 979625648}
   m_Layer: 5
   m_Name: txtInfo
   m_TagString: Untagged
@@ -1259,7 +1248,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: UnityEngine.UI::UnityEngine.UI.Text
   m_Material: {fileID: 0}
   m_Color: {r: 0, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1287,6 +1276,18 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 979625644}
   m_CullTransparentMesh: 1
+--- !u!225 &979625648
+CanvasGroup:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 979625644}
+  m_Enabled: 1
+  m_Alpha: 1
+  m_Interactable: 1
+  m_BlocksRaycasts: 1
+  m_IgnoreParentGroups: 0
 --- !u!1 &1022457472
 GameObject:
   m_ObjectHideFlags: 0
@@ -1379,7 +1380,7 @@ MonoBehaviour:
   m_FontData:
     m_Font: {fileID: 12800000, guid: 025dd04cabfc64bfc8094b98f02d2774, type: 3}
     m_FontSize: 80
-    m_FontStyle: 0
+    m_FontStyle: 1
     m_BestFit: 0
     m_MinSize: 0
     m_MaxSize: 120
@@ -1845,6 +1846,8 @@ MonoBehaviour:
   playerController: {fileID: 814711144}
   floorGenerators:
   - {fileID: 1390697715}
+  randomObjectGenerators:
+  - {fileID: 1390697717}
   clearCount: 2
 --- !u!1 &1489139162
 GameObject:

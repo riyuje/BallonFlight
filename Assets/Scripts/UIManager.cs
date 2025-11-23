@@ -14,7 +14,7 @@ public class UIManager : MonoBehaviour
     private Text txtInfo;
 
     [SerializeField]
-    private CanvasGroup canvasGroupInfo;  //CanvasGroupコンポーネントをスクリプトから制御するためのアサイン場所S
+    private CanvasGroup canvasGroupInfo;  //CanvasGroupコンポーネントをスクリプトから制御するためのアサイン場所
 
     [SerializeField]
     private ResultPopUp resultPopUpPrefab;  //今回作成しているResultPopUpスクリプトを制御するためのアサイン場所
@@ -34,6 +34,9 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private CanvasGroup canvasGroupTitle;
 
+    [SerializeField]
+    private CanvasGroup txtInfoCanvasGroup;  //txtInfo用;
+
     private Tweener tweener;
 
     ///<summary>
@@ -52,6 +55,7 @@ public class UIManager : MonoBehaviour
     {
         //InfoBackGroundゲームオブジェクトの持つCanvansGroupコンポーネントのAlphaの値を、1秒かけて1に変更して、背景と文字が画面に見えるようにする
         canvasGroupInfo.DOFade(1.0f, 1.0f);
+        txtInfoCanvasGroup.DOFade(1.0f, 1.0f);
 
         //文字列をアニメーションさせて表示
         txtInfo.DOText("Game Over...", 1.0f);
@@ -91,6 +95,8 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
+        DOTween.Init();
+
         //タイトル表示
         SwitchDisplayTitle(true, 1.0f);
 
@@ -142,15 +148,28 @@ public class UIManager : MonoBehaviour
     ///<returns></returns>
     public IEnumerator DisplayGameStartInfo()
     {
+        Debug.Log("開始");
         yield return new WaitForSeconds(0.5f);
 
         canvasGroupInfo.alpha = 0;
+        txtInfoCanvasGroup.alpha = 0;
+
         canvasGroupInfo.DOFade(1.0f, 0.5f);
+        txtInfoCanvasGroup.DOFade(1.0f, 0.5f);
         txtInfo.text = "Game Start!";
+        Debug.Log("フェードイン開始");
 
         yield return new WaitForSeconds(1.0f);
-        canvasGroupInfo.DOFade(0f, 0.5f);
+        Debug.Log("フェードアウト開始");
 
+        canvasGroupInfo.DOFade(0f, 0.5f);
+        txtInfoCanvasGroup.DOFade(0f, 0.5f);
+
+        yield return new WaitForSeconds(0.5f);
+        Debug.Log("フェードアウト完了");
+
+        canvasGroupInfo.gameObject.SetActive(false);
         canvasGroupTitle.gameObject.SetActive(false);
+        Debug.Log("タイトル非表示");
     }
 }
