@@ -194,7 +194,6 @@ MonoBehaviour:
   btnTitle: {fileID: 802347336}
   lblStart: {fileID: 1912670560}
   canvasGroupTitle: {fileID: 374619982}
-  txtInfocanvasGroup: {fileID: 979625648}
 --- !u!4 &26753473
 Transform:
   m_ObjectHideFlags: 0
