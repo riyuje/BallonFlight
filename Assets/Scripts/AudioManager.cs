@@ -1,4 +1,4 @@
-using System.Collections;
+ï»¿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -9,45 +9,45 @@ public class AudioManager : MonoBehaviour
     private AudioSource[] audioSources;
 
     ///<summary>
-    ///BGMÄ¶
+    ///BGMå†ç”Ÿ
     ///</summary>
     ///<param name="index"></param>
     ///<returns></returns>
     public IEnumerator PlayBGM(int index)
     {
-        //Ä¶‘O‚É•Ê‚Ì‹È‚ª—¬‚ê‚Ä‚¢‚éê‡
+        //å†ç”Ÿå‰ã«åˆ¥ã®æ›²ãŒæµã‚Œã¦ã„ã‚‹å ´åˆ
         if(index != 0)
         {
-            //™X‚Éƒ{ƒŠƒ…[ƒ€‚ğ‰º‚°‚é
+            //å¾ã€…ã«ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ä¸‹ã’ã‚‹
             audioSources[index - 1].DOFade(0, 0.75f);
-            //Debug.log("‘O‚Ì‹È‚Ìƒ{ƒŠƒ…[ƒ€‚ğ‰º‚°‚é");
+            //Debug.log("å‰ã®æ›²ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ä¸‹ã’ã‚‹");
         }
         if(index == 3)
         {
-            //™X‚Éƒ{ƒŠƒ…[ƒ€‚ğ‰º‚°‚é
+            //å¾ã€…ã«ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ä¸‹ã’ã‚‹
             audioSources[index - 2].DOFade(0, 0.75f);
         }
 
-        //‘O‚Ì‹È‚Ìƒ{ƒŠƒ…[ƒ€‚ª‰º‚ª‚é‚Ì‚ğ‘Ò‚Â
+        //å‰ã®æ›²ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ ãŒä¸‹ãŒã‚‹ã®ã‚’å¾…ã¤
         yield return new WaitForSeconds(0.45f);
 
-        //V‚µ‚¢w’è‚³‚ê‚½‹È‚ğÄ¶
+        //æ–°ã—ã„æŒ‡å®šã•ã‚ŒãŸæ›²ã‚’å†ç”Ÿ
         audioSources[index].Play();
 
-        //Debug.log("V‚µ‚¢‹È‚ğÄ¶‚µAƒ{ƒŠƒ…[ƒ€‚ğã‚°‚é");
+        //Debug.log("æ–°ã—ã„æ›²ã‚’å†ç”Ÿã—ã€ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ä¸Šã’ã‚‹");
 
-        //™X‚Éƒ{ƒŠƒ…[ƒ€‚ğã‚°‚Ä‚¢‚­‚±‚Æ‚ÅA‘O‚Ì‹È‚Æd‚È‚éƒNƒƒXƒtƒF[ƒh‰‰o‚ª‚Å‚«‚é
-        audioSources[index].DOFade(0.1f, 0.75f);  //¡Œã’Ç‰Á‚·‚éSE‚ª•·‚±‚¦‚é‚æ‚¤‚ÉBGM‚Í¬‚³‚ß‚Ìƒoƒ‰ƒ“ƒX‚É‚·‚é
+        //å¾ã€…ã«ãƒœãƒªãƒ¥ãƒ¼ãƒ ã‚’ä¸Šã’ã¦ã„ãã“ã¨ã§ã€å‰ã®æ›²ã¨é‡ãªã‚‹ã‚¯ãƒ­ã‚¹ãƒ•ã‚§ãƒ¼ãƒ‰æ¼”å‡ºãŒã§ãã‚‹
+        audioSources[index].DOFade(0.1f, 0.75f);  //ä»Šå¾Œè¿½åŠ ã™ã‚‹SEãŒèã“ãˆã‚‹ã‚ˆã†ã«BGMã¯å°ã•ã‚ã®ãƒãƒ©ãƒ³ã‚¹ã«ã™ã‚‹
 
-        //‘O‚É—¬‚ê‚Ä‚¢‚½BGM‚ğ’â~
+        //å‰ã«æµã‚Œã¦ã„ãŸBGMã‚’åœæ­¢
         if(index != 0)
         {
-            //‘O‚É—¬‚ê‚Ä‚¢‚½‹È‚Ìƒ{ƒŠƒ…[ƒ€‚ª0‚É‚È‚Á‚½‚ç
+            //å‰ã«æµã‚Œã¦ã„ãŸæ›²ã®ãƒœãƒªãƒ¥ãƒ¼ãƒ ãŒ0ã«ãªã£ãŸã‚‰
             yield return new WaitUntil(() => audioSources[index - 1].volume == 0);
 
-            //Ä¶‚ğ’â~
+            //å†ç”Ÿã‚’åœæ­¢
             audioSources[index - 1].Stop();
-            //Debug.Log("‘O‚Ì‹È‚ğ’â~");
+            //Debug.Log("å‰ã®æ›²ã‚’åœæ­¢");
         }
     }
 }
