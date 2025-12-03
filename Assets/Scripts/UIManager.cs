@@ -63,6 +63,7 @@ public class UIManager : MonoBehaviour
         //文字列をアニメーションさせて表示
         txtInfo.DOText("Game Over...", 1.0f);
 
+        canvasGroupInfo.blocksRaycasts = true;
         btnInfo.onClick.AddListener(RestartGame);
     }
 
@@ -173,7 +174,8 @@ public class UIManager : MonoBehaviour
         yield return new WaitForSeconds(0.5f);
         Debug.Log("フェードアウト完了");
 
-        canvasGroupInfo.gameObject.SetActive(false);
+        canvasGroupInfo.blocksRaycasts = false;
+        //canvasGroupInfo.gameObject.SetActive(false);
         canvasGroupTitle.gameObject.SetActive(false);
         Debug.Log("タイトル非表示");
     }
