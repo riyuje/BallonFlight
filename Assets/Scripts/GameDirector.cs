@@ -4,9 +4,11 @@ using UnityEngine;
 
 public class GameDirector : MonoBehaviour
 {
+    //ゴール
     [SerializeField]
     private GoalChecker goalHousePrefab;  //ゴール地点のプレファブをアサイン
 
+    //Player
     [SerializeField]
     private PlayerController playerController;  //ヒエラルキーにあるYuko_Playerゲームオブジェクトをアサイン
 
@@ -103,7 +105,7 @@ public class GameDirector : MonoBehaviour
         GoalChecker goalHouse = Instantiate(goalHousePrefab);
 
         //TODOゴール地点の初期設定
-        Debug.Log("ゴール地点　生成");
+        goalHouse.SetUpGoalHouse(this);
     }
 
     ///<summary>
@@ -148,5 +150,14 @@ public class GameDirector : MonoBehaviour
         {
             randomObjectGenerators[i].SwitchActivation(true);
         }
+    }
+
+    ///<summary>
+    ///ゴール到着
+    ///</summary>
+    public void GoalClear()
+    {
+        //クリアの曲再生
+        StartCoroutine(audioManager.PlayBGM(2));
     }
 }
