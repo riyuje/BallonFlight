@@ -40,6 +40,12 @@ public class PlayerController : MonoBehaviour
 
     [SerializeField]
     private StartChecker startChecker;
+
+    [SerializeField]
+    private AudioClip knockBackSE;  //敵と接触した際にならすSE用のオーディオファイルをアサインする
+
+    [SerializeField]
+    private GameObject knockbackEffectPrefab;  //敵と接触した際に生成するエフェクト用のプレファブのゲームオブジェクトをアサインする
     void Start()
     {
         //必要なコンポーネントを取得して用意した変数に代入
@@ -242,6 +248,12 @@ public class PlayerController : MonoBehaviour
 
             //敵の反対側にキャラを吹き飛ばす
             transform.position += direction * knockbackPower;
+
+            //敵との接触用のSE(AudioClip)を再生する
+            AudioSource.PlayClipAtPoint(knockBackSE, transform.position);
+
+            //接触した際のエフェクトを、敵の位置に、クローンとして生成する。生成されたゲームオブジェクトを変数へ代入
+            GameObject knockbackEffect = Instantiate(knockbackEffectPrefab, col.transform.position, Quaternion.identity);
         }
     }
 
